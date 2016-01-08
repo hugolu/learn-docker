@@ -45,10 +45,39 @@ exit
 ## attach
 
 依附到一個正在運行的容器中
+```shell
+# docker run -idt ubuntu
+842c8147831f508368054e849e2a65f2f4e17f61982272ed2ba6d8848791f244
+# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+842c8147831f        ubuntu:latest       "/bin/bash"         6 seconds ago       Up 5 seconds                            adoring_fermat
+# docker attach adoring_fermat
+root@842c8147831f:/# echo "hello world"
+hello world
+root@842c8147831f:/# exit
+exit
+# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
 
 ## exec
 
 在運行的容器內執行命令
+```shell
+# docker run -idt ubuntu
+0e02d5678cdd5bb519daee556378533765d43bbfecf910be84466d8951656db8
+# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+0e02d5678cdd        ubuntu:latest       "/bin/bash"         9 seconds ago       Up 9 seconds                            tender_mccarthy
+# docker exec -ti 0e02d5678cdd5bb519daee556378533765d43bbfecf910be84466d8951656db8 /bin/bash
+root@0e02d5678cdd:/# echo "hello world"
+hello world
+root@0e02d5678cdd:/# exit
+exit
+# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+0e02d5678cdd        ubuntu:latest       "/bin/bash"         57 seconds ago      Up 56 seconds                           tender_mccarthy
+```
 
 ## rm 
 
