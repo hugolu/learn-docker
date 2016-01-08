@@ -94,10 +94,21 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 
-## export
+## export, import
 
-導出容器內容成為一個 tar file
-
-## import
-
-導入一個 tar file 來創建一個 image
+- export 導出容器內容成為一個 tar file
+- import 導入一個 tar file 來創建一個 image
+```shell
+# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+0e02d5678cdd        ubuntu:latest       "/bin/bash"         7 minutes ago       Up 7 minutes                            tender_mccarthy
+# docker export 0e02d > ubuntu_test.tar
+# ls
+ubuntu_test.tar
+# cat ubuntu_test.tar | docker import - ubuntu:test
+ac70564cd03a690221ac89e0fe42ec8b8ca7496c37329d9362805dabc530dfd0
+# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+ubuntu              test                ac70564cd03a        10 seconds ago      187.7 MB
+ubuntu              latest              d55e68e6cc9c        4 weeks ago         187.9 MB
+```
