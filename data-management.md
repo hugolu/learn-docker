@@ -33,3 +33,32 @@ hello from node2
 root@9e37cd90c168:/# exit
 #
 ```
+
+## 備份、還原
+```
+# docker run --volumes-from node1 -v $(pwd):/backup ubuntu tar vcf /backup/data.tar /opt/data/
+tar: Removing leading `/' from member names
+/opt/data/
+/opt/data/hello.txt
+# ls
+data.tar
+# tar -tf data.tar
+opt/data/
+opt/data/hello.txt
+```
+```
+# docker exec -it node1 /bin/bash
+root@9e37cd90c168:/# rm -f /opt/data/hello.txt
+root@9e37cd90c168:/# exit
+#
+# docker run --volumes-from node1 -v $(pwd):/backup ubuntu tar vxf /backup/data.tar
+opt/data/
+opt/data/hello.txt
+#
+# docker exec -it node1 /bin/bash
+root@9e37cd90c168:/# cat /opt/data/hello.txt
+hell from node1
+hello from node2
+root@9e37cd90c168:/# exit
+#
+```
