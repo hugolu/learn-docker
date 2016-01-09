@@ -1,6 +1,6 @@
 # Data Management
 
-## 掛載本地目錄作為 data volumn
+## 掛載本地目錄作為 data volume
 ```
 # docker run -it -v /opt/data:/opt/data ubuntu /bin/bash
 root@3caed146561a:/# ls /
@@ -12,7 +12,7 @@ root@3caed146561a:/# exit
 hello world
 ```
 
-## container 之間共用數據，使用 data volumn container
+## container 之間共用數據，使用 data volume container
 ```
 # docker run -it -v /opt/data --name node1 ubuntu
 root@9e37cd90c168:/# echo "hell from node1" > /opt/data/hello.txt
