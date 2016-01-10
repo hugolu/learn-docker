@@ -7,6 +7,6 @@
 - Guest OS: ubuntu/trusty64 on VirtualBox/Vagrant
 
 實驗目標
-- 階段一：在一台vm上跑一個 docker container，執行一個 mongodb
-- 階段二：在一台vm上跑三個 docker container，組成一個 monbodb cluster 
-- 階段三：在三台vm上面各跑一個 docker container，組成一個 mongodb cluster
+- [實驗一](experiment1.md)：在一台vm上跑一個 docker container，執行一個 mongodb
+- [實驗二](experiment2.md)：在一台vm上跑三個 docker container，組成一個 monbodb cluster 
+- [實驗三](experiment3.md)：在三台vm上面各跑一個 docker container，組成一個 mongodb cluster
