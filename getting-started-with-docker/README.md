@@ -185,4 +185,49 @@ b6171817af95
 09997635bafe
 ```
 
-<< 未完待續 >>
+## 起來吧！Web server
+
+使用```docker run -p 80:80```啟動 web server 並把 container 80 port 對應到 host os 的 80 port。
+```
+# docker run -p 80:80 -d nginx-example
+b5b1f7ec08d0ee972fcb58939541a1e5039d4d43fe4f93f7cddba98fa1d54940
+# docker ps
+CONTAINER ID        IMAGE                  COMMAND             CREATED             STATUS              PORTS                NAMES
+b5b1f7ec08d0        nginx-example:latest   "nginx"             3 seconds ago       Up 3 seconds        0.0.0.0:80->80/tcp   goofy_perlman
+```
+
+使用 curl 連接 web server，發生錯誤的原因是因為沒有給```index.html```
+```
+# curl localhost:80
+<html>
+<head><title>500 Internal Server Error</title></head>
+<body bgcolor="white">
+<center><h1>500 Internal Server Error</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
+```
+
+停止container，弄一個簡單的目錄，放一個```index.html```，再來一次。
+```
+# docker stop b5b1f7ec08d0
+b5b1f7ec08d0
+# mkdir share
+# echo "Hello, Docker fans!" >> share/index.html
+# docker run -v /root/build/share/:/var/www -p 80:80 -d nginx-example
+a90c01b21d6306166e8aa1b4cc7b511aa68e6ed45df45e1c50c609854ea1d34b
+```
+- ```-v /host:/container```：指定 container 與 host 共享目錄
+- ```-p 80:80```：將host 80 port綁定到container 80 port
+- ```-d nginx-example```：執行image dockerfile裡面```CMD```的動作 - 執行nginx web server
+
+使用 curl 連接 web server，看到我們想要的結果了 :D
+```
+# curl localhost:80
+Hello, Docker fans!
+```
+
+或是在host os上使用瀏覽器，開啟網址```192.168.33.70```也可看到類似結果
+- docker:80 -> ubuntu:80 -> virbualbox 192.168.33.70:80
+
+![display the result in browser](browser.png)
