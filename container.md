@@ -112,3 +112,30 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 ubuntu              test                ac70564cd03a        10 seconds ago      187.7 MB
 ubuntu              latest              d55e68e6cc9c        4 weeks ago         187.9 MB
 ```
+
+## remove all container
+```
+# docker run ubuntu /bin/bash
+# docker run ubuntu /bin/bash
+# docker run ubuntu /bin/bash
+# docker run ubuntu /bin/bash
+# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+9b7f6cd59a3b        ubuntu:latest       "/bin/bash"         3 seconds ago       Exited (0) 3 seconds ago                       desperate_bartik
+5fe80fd16942        ubuntu:latest       "/bin/bash"         5 seconds ago       Exited (0) 4 seconds ago                       mad_euclid
+62e7c3a9c2fa        ubuntu:latest       "/bin/bash"         6 seconds ago       Exited (0) 5 seconds ago                       elegant_jang
+acacf9dbb335        ubuntu:latest       "/bin/bash"         8 seconds ago       Exited (0) 7 seconds ago                       ecstatic_euclid
+# docker ps -aq
+9b7f6cd59a3b
+5fe80fd16942
+62e7c3a9c2fa
+acacf9dbb335
+# docker rm $(docker ps -aq)
+9b7f6cd59a3b
+5fe80fd16942
+62e7c3a9c2fa
+acacf9dbb335
+# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+#
+```
