@@ -1,5 +1,9 @@
 # 實驗ㄧ：Dockerizing MongoDB on a VM
 
+參考連結
+- [mongo Shell Quick Reference](https://docs.mongodb.org/v3.2/reference/mongo-shell/)
+- [MongoDB shell命令行的使用](http://www.2cto.com/database/201210/159130.html)
+
 ## 下載 MongoDB Docker Image
 
 搜尋適合的 Image
@@ -67,7 +71,5 @@ Questions? Try the support group
 root@2581dd980b2f:/# exit
 #
 # docker stop mongo
-mongo
-# docker rm mongo
 mongo
 ```
