@@ -109,4 +109,80 @@ ubuntu                     latest              d55e68e6cc9c        4 weeks ago  
 
 找到一個Image，id=```30059fbd9d2a```，repository=```fideloper/docker-example```，這就是剛剛打包的image。
 
+## 使用 Dockerfile 建立 server
+
+先創建一個目錄，然後進到裡面
+```
+# mkdir build
+# cd build
+```
+
+產生一個```default```的檔案 (Nginx 的設定檔)
+```
+server {
+    root /var/www;
+    index index.html index.htm;
+
+    # Make site accessible from http://localhost/
+    server_name localhost;
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.html
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+產生一個```Dockerfile``` (docker image的設定檔)
+```
+FROM fideloper/docker-example:0.1
+
+RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get -y install nginx
+
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN mkdir /etc/nginx/ssl
+ADD default /etc/nginx/sites-available/default
+
+EXPOSE 80
+
+CMD ["nginx"]
+```
+- FROM：根據那個base image
+- RUN：創建過程要執行哪些指令
+- ADD：創建過程要加入哪些檔案
+- EXPOSE：要讓host os看見哪些port
+- RUN：docker container啟動後，執行的指令
+
+透過```Dockerfile```建立一個新的image
+```
+# docker build -t nginx-example .
+Successfully built dfe974949c9e
+```
+
+觀察新增哪些image，找到剛剛製作的image```nginx-example```。
+```
+# docker images
+REPOSITORY                 TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+nginx-example              latest              dfe974949c9e        3 minutes ago       450.1 MB
+fideloper/docker-example   0.1                 30059fbd9d2a        26 minutes ago      429.1 MB
+ubuntu                     latest              d55e68e6cc9c        4 weeks ago         187.9 MB
+```
+
+再次觀察container執行狀態，看到一些之前使用```docker run```產生的container。使用```docker rm```將那些已經停止運行的container移除。
+- 指令：```docker rm CONTAINER [CONTAINER...]```
+```
+# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+054f7b9e9f77        ubuntu:latest       "/bin/bash"         40 minutes ago      Exited (0) 34 minutes ago                       trusting_payne
+b6171817af95        ubuntu:latest       "/bin/bash"         50 minutes ago      Exited (0) 49 minutes ago                       naughty_hypatia
+09997635bafe        ubuntu:latest       "/bin/bash"         About an hour ago   Exited (0) 59 minutes ago                       loving_heisenberg
+# docker rm $(docker ps -aq)
+054f7b9e9f77
+b6171817af95
+09997635bafe
+```
+
 << 未完待續 >>
