@@ -20,4 +20,54 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 mongo               latest              f2a1deabdc69        4 weeks ago         316.9 MB
 ```
 
-<< 未完待續 >>
+## 操作 Mongodb
+
+啟動 container
+```
+# docker run --name mongo -d mongo
+2581dd980b2f92e9e4ebd041011fccc9314193158d50e33b9b511098594d9802
+# docker ps -a
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS               NAMES
+2581dd980b2f        mongo:latest        "/entrypoint.sh mong   4 seconds ago       Up 3 seconds        27017/tcp           mongo
+# docker exec -ti mongo /bin/bash
+```
+
+啟動 mongodb
+```
+root@2581dd980b2f:/# mongo
+MongoDB shell version: 3.2.0
+connecting to: test
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+>
+```
+
+操作資料庫
+```
+> db.students.insert(
+... [
+... {"id":"001","name":"AAA"},
+... {"id":"002","name":"BBB"},
+... {"id":"003","name":"CCC"}
+... ]
+... )
+> db.students.count();
+3
+> db.students.find({"id":"002"});
+{ "_id" : ObjectId("56926393571f34687b4620f2"), "id" : "002", "name" : "BBB" }
+> exit
+```
+
+離開並停止container
+```
+root@2581dd980b2f:/# exit
+#
+# docker stop mongo
+mongo
+# docker rm mongo
+mongo
+```
