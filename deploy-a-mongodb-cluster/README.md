@@ -4,7 +4,11 @@
 
 實驗環境
 - Host OS: OS X 10.10.5
-- Guest OS: ubuntu/trusty64 on VirtualBox/Vagrant
+- Guest OS: ubuntu/trusty64 (Ubuntu 14.04.3 LTS)
+  - VirtualBox 5.0.12
+  - Vagrant 1.7.4
+  - Docker 1.6.2
+  - mongo latest (3.2.0)
 
 實驗目標
 - [實驗一](experiment1.md)：在一台vm上跑一個 docker container，執行一個 mongodb
