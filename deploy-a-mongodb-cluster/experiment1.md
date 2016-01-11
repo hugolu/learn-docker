@@ -4,6 +4,16 @@
 - [mongo Shell Quick Reference](https://docs.mongodb.org/v3.2/reference/mongo-shell/)
 - [MongoDB shell命令行的使用](http://www.2cto.com/database/201210/159130.html)
 
+## 準備
+
+啟動 Ubuntu/VM，使用 ssh 登入，切換使用者 ```root```
+```
+$ vagrant up
+$ vagrant ssh
+$ sudo su -
+#
+```
+
 ## 下載 MongoDB Docker Image
 
 搜尋適合的 Image
