@@ -122,7 +122,9 @@ root@node1:/# mongo
 >
 ```
 
-設定 replica set (以下忽略shell 的提示符號與輸出結果，想看過程的請參考[實驗二](experiment2.md))
+(以下忽略 mongo shell 的提示符號與輸出結果，想看過程的請參考[實驗二](experiment2.md))
+
+設定 replica set
 ```
 var demoConfig = { 
     _id: "demo", 
@@ -151,5 +153,65 @@ rs.status()
 - node2 成為 SECONDARY
 - node3 成為 ARBITER
 
+## 插入資料 @node1
 
-<< 未完待續 >>
+在node1的mongo shell內，插入資料並檢索插入結果
+```
+db.students.insert([
+	{"id":"001","name":"AAA"},
+	{"id":"002","name":"BBB"},
+	{"id":"003","name":"CCC"}
+])
+db.students.find()
+```
+
+## 檢索資料 @node2
+
+在 node2 上，執行 docker container，進入 mongo shell
+```
+# docker exec -ti node2 /bin/bash
+root@node2:/# mongo
+demo:SECONDARY>
+```
+
+設定 Secondary 可讀
+```
+demo:SECONDARY> db.getMongo().setSlaveOk();
+```
+
+讀取資料，確定 replication 機制成功。
+```
+demo:SECONDARY> db.students.find();
+{ "_id" : ObjectId("569356c68afe17c2b2c1dbb3"), "id" : "001", "name" : "AAA" }
+{ "_id" : ObjectId("569356c68afe17c2b2c1dbb4"), "id" : "002", "name" : "BBB" }
+{ "_id" : ObjectId("569356c68afe17c2b2c1dbb5"), "id" : "003", "name" : "CCC" }
+```
+
+## 結束實驗
+
+以下動作可以在三台虛擬執行
+
+離開 mongo shell
+```
+> exit
+```
+
+停止、移除 docker container
+```
+# docker stop $(docker ps -aq)
+# docker rm $(docker ps -aq)
+```
+
+登出虛擬機
+```
+# exit
+logout
+vagrant@vagrant-ubuntu-trusty-64:~$ exit
+logout
+Connection to 127.0.0.1 closed.
+```
+
+關閉虛擬機
+```
+$ vagrant halt
+```
