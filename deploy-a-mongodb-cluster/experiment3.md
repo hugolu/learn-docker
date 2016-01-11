@@ -76,5 +76,80 @@ $ sudo su -
 EOF
 ```
 
+## 啟動 mongo container
+
+在 node1 上啟動 mongo container
+```
+docker run --name node1 --hostname node1 \
+--add-host node1:${node1} \
+--add-host node2:${node2} \
+--add-host node3:${node3} \
+-p 27017:27017 -d mongo --replSet "demo"
+```
+
+在 node2 上啟動 mongo container
+```
+docker run --name node2 --hostname node2 \
+--add-host node1:${node1} \
+--add-host node2:${node2} \
+--add-host node3:${node3} \
+-p 27017:27017 -d mongo --replSet "demo"
+```
+
+在 node3 上啟動 mongo container
+```
+docker run --name node3 --hostname node3 \
+--add-host node1:${node1} \
+--add-host node2:${node2} \
+--add-host node3:${node3} \
+-p 27017:27017 -d mongo --replSet "demo"
+```
+
+- ```--add-host <host>:<ip>``` 告訴 container 主機名稱與IP的對應
+- ```-p 27017:27017``` 將 mongo service port 對應到虛擬機對外的 port
+
+## 設定 Replica Set
+
+登入 node1
+```
+# docker exec -ti node1 /bin/bash
+root@node1:/#
+```
+
+登入 mongo shell
+```
+root@node1:/# mongo
+>
+```
+
+設定 replica set (以下忽略shell 的提示符號與輸出結果，想看過程的請參考[實驗二](experiment2.md))
+```
+var demoConfig = { 
+    _id: "demo", 
+    members: [
+        { _id: 0, 
+          host: '192.168.33.11:27017', 
+          priority: 10
+        },
+        { _id: 1, 
+          host: '192.168.33.12:27017'
+        }, 
+        { _id: 2, 
+          host: '192.168.33.13:27017', 
+          arbiterOnly: true
+        }
+    ] 
+ };
+
+rs.initiate(demoConfig)
+rs.conf()
+rs.status()
+```
+
+等候數秒，觀察 relica set 狀態。
+- node1 成為 PRIMARY
+- node2 成為 SECONDARY
+- node3 成為 ARBITER
+
 
 << 未完待續 >>
